@@ -1,4 +1,4 @@
-module changeme
+module github.com/khoi/pipe
 
 go 1.18
 
