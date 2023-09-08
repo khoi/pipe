@@ -1,0 +1,9 @@
+{
+  "name": "SHA256",
+  "description": "Generate SHA256 hash of selection",
+  "pipe": {
+    "exec": "/usr/bin/shasum",
+    "args": ["-a", "256", "{{args.selection}}"]
+  },
+  "output": "clipboard+replace"
+}
