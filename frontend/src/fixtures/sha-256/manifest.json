@@ -5,5 +5,6 @@
     "exec": "/usr/bin/shasum",
     "args": ["-a", "256", "{{args.content}}"]
   },
-  "output": "clipboard+replace"
+  "output": "clipboard+replace",
+  "tags": ["hash", "sha", "256"]
 }
