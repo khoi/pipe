@@ -1,7 +1,7 @@
-export type SelectionArgument = "{{args.selection}}";
+export type ContentArgument = "{{args.content}}";
 export type LinesArgument = "{{args.lines}}";
 
-export type Argument = SelectionArgument | LinesArgument;
+export type Argument = ContentArgument | LinesArgument;
 
 export type Manifest = {
   name: string;

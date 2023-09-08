@@ -3,7 +3,7 @@
   "description": "Generate SHA256 hash of selection",
   "pipe": {
     "exec": "/usr/bin/shasum",
-    "args": ["-a", "256", "{{args.selection}}"]
+    "args": ["-a", "256", "{{args.content}}"]
   },
   "output": "clipboard+replace"
 }

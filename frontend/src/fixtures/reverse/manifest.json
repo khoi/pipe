@@ -1,0 +1,9 @@
+{
+  "name": "Reverse",
+  "description": "Reverses the characters in a string.",
+  "pipe": {
+    "exec": "./reverse.js",
+    "args": ["{{args.content}}"]
+  },
+  "output": "replace"
+}
