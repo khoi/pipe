@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { NinjaKeys } from "ninja-keys";
   import { onMount } from "svelte";
   const hotkeys = [
     {
@@ -34,5 +33,5 @@
     rel="stylesheet"
   />
 </svelte:head>
-<h1>Ctrl+K</h1>
-<ninja-keys placeholder="My custom placeholder" />
+<slot />
+<ninja-keys placeholder="Run pipeline" />
