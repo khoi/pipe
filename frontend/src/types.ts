@@ -12,5 +12,5 @@ export type Manifest = {
     stdin?: string;
   };
   output: "clipboard+replace" | "clipboard" | "replace" | "noop";
-  tags?: string[];
+  tags: string[];
 };
