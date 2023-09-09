@@ -1,6 +1,7 @@
 html {
     background-color: rgba(27, 38, 54, 1);
     color: white;
+    overscroll-behavior: none;
 }
 
 body {
@@ -10,6 +11,8 @@ body {
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
+
+
 
 /* @font-face {
     font-family: "Nunito";
