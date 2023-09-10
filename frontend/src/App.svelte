@@ -1,4 +1,5 @@
 <script lang="ts">
+  import 'ninja-keys';
   import CodeMirror from "svelte-codemirror-editor";
   import { Prec } from "@codemirror/state";
   import { keymap } from "@codemirror/view";
@@ -11,7 +12,6 @@
         {
           key: "Mod-k",
           run: () => {
-            console.log("hi");
             const ninja = document.querySelector("ninja-keys");
             ninja.open();
             return true;
