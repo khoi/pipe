@@ -48,7 +48,7 @@ func ensureExecDir(cmd *Cmd, execDir fs.FS) func() {
 		}
 		defer f.Close()
 
-		out, err := os.Create(tempDir + "/" + path)
+		out, err := os.OpenFile(tempDir+"/"+path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 		if err != nil {
 			return err
 		}
