@@ -1,25 +1,21 @@
 <script lang="ts">
+  import type { INinjaAction } from "ninja-keys/dist/interfaces/ininja-action";
   import { onMount } from "svelte";
-  const hotkeys = [
-    {
-      id: "Home",
-      title: "Open Home",
-      hotkey: "cmd+h",
-      mdIcon: "home",
-      handler: () => {
-        console.log("navigation to home");
-      },
-    },
-    {
-      id: "Open Projects",
-      title: "Open Projects",
-      hotkey: "cmd+p",
+  import type { manifest } from "wailsjs/go/models";
+
+  export let manifests: manifest.Manifest[] = [];
+
+  const hotkeys: INinjaAction[] = manifests.map((manifest, idx) => {
+    return {
+      id: manifest.name,
+      title: `${manifest.name} - ${manifest.description}`,
+      hotkey: idx < 9 ? `cmd+${idx + 1}` : undefined,
       mdIcon: "apps",
       handler: () => {
-        console.log("navigation to projects");
+        console.log(`navigation to ${manifest.name}`);
       },
-    },
-  ];
+    };
+  });
 
   onMount(async () => {
     const ninja = document.querySelector("ninja-keys");
