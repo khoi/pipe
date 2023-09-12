@@ -28,7 +28,8 @@ func NewFromBytes(filesystem fs.FS, id string, bytes []byte) (Manifest, error) {
 }
 
 func (m Manifest) Execute(ctx context.Context, input *string) (string, error) {
-	cmd := m.Pipe.Command(ctx, m.filesystem, input)
+	cmd, cleanup := m.Pipe.Command(ctx, m.filesystem, input)
+	defer cleanup()
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return "", err

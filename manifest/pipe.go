@@ -15,16 +15,16 @@ type Pipe struct {
 	Stdin *Argument  `json:"stdin,omitempty"`
 }
 
-func (p Pipe) Command(ctx context.Context, execDir fs.FS, input *string) *Cmd {
+func (p Pipe) Command(ctx context.Context, execDir fs.FS, input *string) (*Cmd, func()) {
 	args := funk.FlatMap(p.Args, func(a Argument) []string {
 		return a.Value(input)
 	})
 
-	cmd, _ := newCommand(ctx, execDir, "bash", "-c", p.Exec+" "+strings.Join(args, " "))
+	cmd, cleanup := newCommand(ctx, execDir, "bash", "-c", p.Exec+" "+strings.Join(args, " "))
 	if p.Stdin != nil {
 		cmd.Stdin = &inputReader{input: p.Stdin.Value(input)}
 	}
-	return cmd
+	return cmd, cleanup
 }
 
 type inputReader struct {
