@@ -3,11 +3,35 @@
   import CodeMirror from "svelte-codemirror-editor";
   import { Prec } from "@codemirror/state";
   import { keymap } from "@codemirror/view";
-  import { ListManifests } from "../wailsjs/go/main/App";
+  import { ListManifests, RunManifest } from "../wailsjs/go/main/App";
   import CommandPalette from "./CommandPalette.svelte";
+  import { write } from "./output";
+  import type { Output } from "./types";
 
   let value = "";
-  const manifestsP = ListManifests();
+  const hotkeysP = ListManifests().then((manifests) => {
+    return manifests.map((manifest, idx) => {
+      return {
+        id: manifest.name,
+        title: `${manifest.name} - ${manifest.description}`,
+        hotkey: idx < 9 ? `cmd+${idx + 1}` : undefined,
+        mdIcon: "apps",
+        handler: async () => {
+          console.log(`Running ${manifest.name} for input\n${value}`);
+          try {
+            const output = await RunManifest(manifest.id, value);
+            if (write(output, manifest.output as Output) === false) {
+              return;
+            }
+            value = output;
+          } catch (e) {
+            console.error("Error running manifest", e);
+          }
+        },
+      };
+    });
+  });
+
   let extensions = [
     Prec.highest(
       keymap.of([
@@ -25,10 +49,10 @@
 </script>
 
 <main>
-  {#await manifestsP}
+  {#await hotkeysP}
     <p>Loading...</p>
-  {:then manifests}
-    <CommandPalette {manifests}>
+  {:then hotkeys}
+    <CommandPalette {hotkeys}>
       <CodeMirror
         bind:value
         styles={{

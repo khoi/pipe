@@ -27,11 +27,12 @@ func NewFromBytes(filesystem fs.FS, id string, bytes []byte) (Manifest, error) {
 	return m, nil
 }
 
-func (m Manifest) Execute(ctx context.Context, input *string) error {
+func (m Manifest) Execute(ctx context.Context, input *string) (string, error) {
 	cmd := m.Pipe.Command(ctx, input)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return err
+		return "", err
 	}
-	return m.Output.Write(ctx, string(output))
+	out := string(output)
+	return out, m.Output.Write(ctx, out)
 }

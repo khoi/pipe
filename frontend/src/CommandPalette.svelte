@@ -1,21 +1,8 @@
 <script lang="ts">
   import type { INinjaAction } from "ninja-keys/dist/interfaces/ininja-action";
   import { onMount } from "svelte";
-  import type { manifest } from "wailsjs/go/models";
 
-  export let manifests: manifest.Manifest[] = [];
-
-  const hotkeys: INinjaAction[] = manifests.map((manifest, idx) => {
-    return {
-      id: manifest.name,
-      title: `${manifest.name} - ${manifest.description}`,
-      hotkey: idx < 9 ? `cmd+${idx + 1}` : undefined,
-      mdIcon: "apps",
-      handler: () => {
-        console.log(`navigation to ${manifest.name}`);
-      },
-    };
-  });
+  export let hotkeys: INinjaAction[] = [];
 
   onMount(async () => {
     const ninja = document.querySelector("ninja-keys");

@@ -3,6 +3,8 @@ export type LinesArgument = "{{args.lines}}";
 
 export type Argument = ContentArgument | LinesArgument;
 
+export type Output = "clipboard+replace" | "clipboard" | "replace" | "noop";
+
 export type Manifest = {
   name: string;
   description: string;
@@ -11,6 +13,6 @@ export type Manifest = {
     args: Array<string | Argument>;
     stdin?: string;
   };
-  output: "clipboard+replace" | "clipboard" | "replace" | "noop";
+  output: Output;
   tags: string[];
 };
