@@ -3,6 +3,7 @@ package manifest
 import (
 	"context"
 	"io"
+	"strings"
 
 	"github.com/khoi/pipe/funk"
 )
@@ -10,7 +11,7 @@ import (
 type Pipe struct {
 	Exec  string     `json:"exec"`
 	Args  []Argument `json:"args"`
-	Stdin *string    `json:"stdin,omitempty"`
+	Stdin *Argument  `json:"stdin,omitempty"`
 }
 
 func (p Pipe) Command(ctx context.Context, input *string) *Cmd {
@@ -18,15 +19,15 @@ func (p Pipe) Command(ctx context.Context, input *string) *Cmd {
 		return a.Value(input)
 	})
 
-	cmd := newCommand(ctx, p.Exec, args...)
+	cmd := newCommand(ctx, "bash", "-c", p.Exec+" "+strings.Join(args, " "))
 	if p.Stdin != nil {
-		cmd.Stdin = &inputReader{input: *p.Stdin}
+		cmd.Stdin = &inputReader{input: p.Stdin.Value(input)}
 	}
 	return cmd
 }
 
 type inputReader struct {
-	input string
+	input []string
 	idx   int
 }
 
@@ -34,7 +35,7 @@ func (r *inputReader) Read(p []byte) (int, error) {
 	if r.idx >= len(r.input) {
 		return 0, io.EOF
 	}
-	n := copy(p, r.input[r.idx:])
-	r.idx += n
+	n := copy(p, r.input[r.idx])
+	r.idx++
 	return n, nil
 }
