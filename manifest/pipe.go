@@ -3,6 +3,7 @@ package manifest
 import (
 	"context"
 	"io"
+	"io/fs"
 	"strings"
 
 	"github.com/khoi/pipe/funk"
@@ -14,12 +15,12 @@ type Pipe struct {
 	Stdin *Argument  `json:"stdin,omitempty"`
 }
 
-func (p Pipe) Command(ctx context.Context, input *string) *Cmd {
+func (p Pipe) Command(ctx context.Context, execDir fs.FS, input *string) *Cmd {
 	args := funk.FlatMap(p.Args, func(a Argument) []string {
 		return a.Value(input)
 	})
 
-	cmd := newCommand(ctx, "bash", "-c", p.Exec+" "+strings.Join(args, " "))
+	cmd, _ := newCommand(ctx, execDir, "bash", "-c", p.Exec+" "+strings.Join(args, " "))
 	if p.Stdin != nil {
 		cmd.Stdin = &inputReader{input: p.Stdin.Value(input)}
 	}
