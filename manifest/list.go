@@ -16,7 +16,8 @@ func ListManifests(assets fs.FS) []*Manifest {
 
 	// Loop over the files
 	for _, manifestDir := range manifestsDir {
-		manifestDirPath := "frontend/src/fixtures/" + manifestDir.Name()
+		manifestDirName := manifestDir.Name()
+		manifestDirPath := "frontend/src/fixtures/" + manifestDirName
 
 		// Open the file
 		manifestFile, err := assets.Open(
@@ -38,7 +39,7 @@ func ListManifests(assets fs.FS) []*Manifest {
 			panic(err)
 		}
 
-		m, err := NewFromBytes(manifestFS, manifestBytes)
+		m, err := NewFromBytes(manifestFS, manifestDirName, manifestBytes)
 		if err != nil {
 			panic(err)
 		}

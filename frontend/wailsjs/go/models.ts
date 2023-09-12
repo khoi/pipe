@@ -17,6 +17,7 @@ export namespace manifest {
 	    }
 	}
 	export class Manifest {
+	    id: string;
 	    name: string;
 	    description: string;
 	    pipe: Pipe;
@@ -29,6 +30,7 @@ export namespace manifest {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
 	        this.name = source["name"];
 	        this.description = source["description"];
 	        this.pipe = this.convertValues(source["pipe"], Pipe);

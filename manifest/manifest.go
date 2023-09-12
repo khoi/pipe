@@ -7,6 +7,7 @@ import (
 )
 
 type Manifest struct {
+	ID          string   `json:"id"`
 	Name        string   `json:"name"`
 	Description string   `json:"description"`
 	Pipe        Pipe     `json:"pipe"`
@@ -15,12 +16,13 @@ type Manifest struct {
 	filesystem  fs.FS    `json:"-"`
 }
 
-func NewFromBytes(filesystem fs.FS, bytes []byte) (Manifest, error) {
+func NewFromBytes(filesystem fs.FS, id string, bytes []byte) (Manifest, error) {
 	var m Manifest
 	err := json.Unmarshal(bytes, &m)
 	if err != nil {
 		return m, err
 	}
+	m.ID = id
 	m.filesystem = filesystem
 	return m, nil
 }
