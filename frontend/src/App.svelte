@@ -7,6 +7,7 @@
   import CommandPalette from "./CommandPalette.svelte";
   import { write } from "./output";
   import type { Output } from "./types";
+  import { oneDark } from "@codemirror/theme-one-dark";
 
   let value = "";
   const hotkeysP = ListManifests().then((manifests) => {
@@ -43,7 +44,7 @@
             return true;
           },
         },
-      ]),
+      ])
     ),
   ];
 </script>
@@ -62,6 +63,7 @@
           },
         }}
         {extensions}
+        theme={oneDark}
       />
     </CommandPalette>
   {:catch error}
