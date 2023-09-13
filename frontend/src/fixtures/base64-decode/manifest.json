@@ -1,0 +1,11 @@
+{
+  "name": "Decode base64",
+  "description": "Decodes base64 encoded text",
+  "pipe": {
+    "exec": "/usr/bin/base64",
+    "args": ["-d"],
+    "stdin": "{{args.content}}"
+  },
+  "output": "clipboard+replace",
+  "tags": ["hash", "base", "64", "decode", "base64"]
+}
