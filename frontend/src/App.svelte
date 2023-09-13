@@ -55,6 +55,8 @@
   {:then hotkeys}
     <CommandPalette {hotkeys}>
       <CodeMirror
+        basic={true}
+        lineWrapping={true}
         bind:value
         styles={{
           "&": {
