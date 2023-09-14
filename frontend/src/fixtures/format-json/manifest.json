@@ -1,0 +1,11 @@
+{
+  "name": "Format JSON",
+  "description": "Format JSON document",
+  "pipe": {
+    "exec": "/usr/bin/python3",
+    "args": ["-m", "json.tool"],
+    "stdin": "{{args.content}}"
+  },
+  "output": "replace",
+  "tags": ["format", "json", "prettify", "pretty"]
+}
