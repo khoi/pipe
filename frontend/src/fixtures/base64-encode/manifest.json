@@ -2,7 +2,7 @@
   "name": "Encode base64",
   "description": "Encode text to base64",
   "pipe": {
-    "exec": "/usr/bin/base64",
+    "exec": "base64",
     "args": [],
     "stdin": "{{args.content}}"
   },

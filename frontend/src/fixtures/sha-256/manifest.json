@@ -2,7 +2,7 @@
   "name": "SHA256",
   "description": "Generate SHA256 hash of selection.",
   "pipe": {
-    "exec": "/usr/bin/shasum",
+    "exec": "shasum",
     "args": ["-a", "256", " | awk '{print $1}'"],
     "stdin": "{{args.content}}"
   },

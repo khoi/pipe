@@ -2,7 +2,7 @@
   "name": "Format JSON",
   "description": "Format JSON document",
   "pipe": {
-    "exec": "/usr/bin/python3",
+    "exec": "python3",
     "args": ["-m", "json.tool"],
     "stdin": "{{args.content}}"
   },
