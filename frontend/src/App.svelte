@@ -8,6 +8,7 @@
   import { write } from "./output";
   import type { Output } from "./types";
   import { oneDark } from "@codemirror/theme-one-dark";
+  import { json } from "@codemirror/lang-json";
 
   let value = "";
   const hotkeysP = ListManifests().then((manifests) => {
@@ -44,7 +45,7 @@
             return true;
           },
         },
-      ])
+      ]),
     ),
   ];
 </script>
@@ -66,6 +67,7 @@
         }}
         {extensions}
         theme={oneDark}
+        lang={json()}
       />
     </CommandPalette>
   {:catch error}
