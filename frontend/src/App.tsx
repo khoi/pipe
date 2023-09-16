@@ -3,7 +3,7 @@
 // import { basicSetup, minimalSetup } from '@uiw/codemirror-extensions-basic-setup';
 
 import { langs } from "@uiw/codemirror-extensions-langs";
-import { gruvboxDark } from "@uiw/codemirror-theme-gruvbox-dark";
+import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import React from "react";
 
@@ -14,6 +14,7 @@ import "./global.css";
 import { manifest } from "wailsjs/go/models";
 import { Output } from "./types";
 import { write } from "./output";
+import useSystemTheme from "./useSystemTheme";
 
 const extensions = [
   langs.css(),
@@ -32,6 +33,7 @@ function App() {
   const setValue = React.useCallback((value: string) => {
     valueRef.current = value;
   }, []);
+  const theme = useSystemTheme();
 
   const [manifests, setManifests] = React.useState(emptyManifests);
   const runManifest = React.useCallback(async (manifest: manifest.Manifest) => {
@@ -70,7 +72,7 @@ function App() {
         className={styles.editor}
         value={valueRef.current}
         extensions={extensions}
-        theme={gruvboxDark}
+        theme={theme == "dark" ? gruvboxDark : gruvboxLight}
         onChange={setValue}
       />
       <div className={styles.statusBar}>
