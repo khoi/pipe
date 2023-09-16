@@ -62,7 +62,7 @@
         styles={{
           "&": {
             width: "100vw",
-            height: "100vh",
+            height: "calc(100vh - calc(var(--status-height) * 2))",
           },
         }}
         {extensions}
@@ -70,10 +70,31 @@
         lang={json()}
       />
     </CommandPalette>
+    <div class="status">
+      <span>Ctrl+K to open command palette</span>
+    </div>
   {:catch error}
     <p>{error.message}</p>
   {/await}
 </main>
 
 <style>
+  :root {
+    --status-height: 20px;
+  }
+  .status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--status-height);
+    padding: 0.5rem;
+    color: #999;
+    font-size: 0.75rem;
+    display: flex;
+  }
+  .status span {
+    display: flex;
+    align-items: center;
+  }
 </style>
