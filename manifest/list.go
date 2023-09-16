@@ -25,6 +25,10 @@ func ListManifestFixtures(assets fs.FS) []*Manifest {
 		manifestDirName := manifestDir.Name()
 		manifestDirPath := "frontend/src/fixtures/" + manifestDirName
 
+		if !manifestDir.IsDir() {
+			continue
+		}
+
 		// Open the file
 		manifestFile, err := assets.Open(
 			manifestDirPath + "/manifest.json",
