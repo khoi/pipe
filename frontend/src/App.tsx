@@ -42,16 +42,17 @@ function App() {
       if (write(output, manifest.output as Output) === false) {
         return;
       }
-      if (!codeMirrorRef.current) {
-        return;
-      }
-      if (!codeMirrorRef.current.view) {
+      if (!codeMirrorRef.current || !codeMirrorRef.current.view) {
         return;
       }
       const view = codeMirrorRef.current.view;
-      view.dispatch({
-        changes: { from: 0, to: view.state.doc.length, insert: output },
-      });
+      view.dispatch(
+        view.state.changeByRange((range) => ({
+          changes: [{ from: 0, to: view.state.doc.length, insert: output }],
+          range: range,
+        }))
+      );
+      view.focus();
     } catch (e) {
       console.error("Error running manifest", e);
     }
