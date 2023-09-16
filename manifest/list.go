@@ -6,6 +6,12 @@ import (
 )
 
 func ListManifests(assets fs.FS) []*Manifest {
+	manifests := StaticManifests()
+	fixtures := ListManifestFixtures(assets)
+	return append(manifests, fixtures...)
+}
+
+func ListManifestFixtures(assets fs.FS) []*Manifest {
 	var manifests []*Manifest
 
 	// Get all the files in the director
