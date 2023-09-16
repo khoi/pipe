@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/khoi/pipe/funk"
 	"golang.org/x/net/context"
 )
 
@@ -27,7 +26,7 @@ var FormatJSON = Manifest{
 	Name:        "Format JSON",
 	Description: "Format JSON document",
 	Pipe: Pipe{
-		Handler: funk.Pointerify(formatJSON),
+		Handler: formatJSON,
 	},
 	Output: Replace,
 	Tags:   []string{"json", "format", "prettify", "pretty"},

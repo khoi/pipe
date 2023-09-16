@@ -12,7 +12,7 @@ type Pipe struct {
 	Exec    string     `json:"exec"`
 	Args    []Argument `json:"args"`
 	Stdin   *Argument  `json:"stdin,omitempty"`
-	Handler *Inbuilt   `json:"-"`
+	Handler Inbuilt    `json:"-"`
 }
 
 func (p Pipe) Command(ctx context.Context, execDir fs.FS, input *string) (*Cmd, func()) {
