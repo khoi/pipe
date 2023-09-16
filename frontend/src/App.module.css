@@ -1,0 +1,17 @@
+.editor :global(.cm-editor) {
+  height: calc(100vh - var(--status-bar-height));
+}
+
+.statusBar {
+  height: var(--status-bar-height);
+  background-color: var(--status-bar-background-color);
+  color: var(--status-bar-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
