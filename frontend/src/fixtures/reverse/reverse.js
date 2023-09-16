@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const args = process.argv.slice(2);
-const str = args[0];
+const str = args.join(" ");
 
 /**
  * Reverse a string
