@@ -6,8 +6,7 @@ import (
 )
 
 func uuidGenerate(_ context.Context, input *string) (string, error) {
-	id := uuid.New()
-	return id.String(), nil
+	return uuid.NewString(), nil
 }
 
 var UUIDGenerate = Manifest{
