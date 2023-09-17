@@ -24,5 +24,13 @@ export default function useSystemTheme() {
     };
   }, []);
 
+  React.useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
   return theme;
 }
