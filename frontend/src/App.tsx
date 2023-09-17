@@ -12,9 +12,10 @@ import { ListManifests, RunManifest } from "../wailsjs/go/main/App";
 import { CommandPalette } from "./CommandPalette";
 import "./global.css";
 import { manifest } from "wailsjs/go/models";
-import { Output } from "./types";
-import { write } from "./output";
 import useSystemTheme from "./useSystemTheme";
+import { Loader2 } from "lucide-react";
+import { write } from "./output";
+import { Output } from "./types";
 
 const extensions = [
   langs.css(),
@@ -36,12 +37,24 @@ function App() {
   const theme = useSystemTheme();
 
   const [manifests, setManifests] = React.useState(emptyManifests);
+  React.useEffect(() => {
+    async function loadManifests() {
+      const manifests = await ListManifests();
+      setManifests(manifests);
+    }
+    loadManifests();
+  }, []);
+
+  const [loading, setLoading] = React.useState(false);
   const runManifest = React.useCallback(async (manifest: manifest.Manifest) => {
     try {
+      setLoading(true);
       const output = await RunManifest(manifest.id, valueRef.current);
+
       if (write(output, manifest.output as Output) === false) {
         return;
       }
+
       if (!codeMirrorRef.current || !codeMirrorRef.current.view) {
         return;
       }
@@ -53,22 +66,17 @@ function App() {
         }))
       );
       view.focus();
-    } catch (e) {
-      console.error("Error running manifest", e);
+    } catch (error) {
+      console.error("Error running manifest", error);
+    } finally {
+      setLoading(false);
     }
-  }, []);
-
-  React.useEffect(() => {
-    async function loadManifests() {
-      const manifests = await ListManifests();
-      setManifests(manifests);
-    }
-    loadManifests();
   }, []);
 
   return (
     <React.Fragment>
       <CodeMirror
+        readOnly={loading}
         ref={codeMirrorRef}
         className={styles.editor}
         value={valueRef.current}
@@ -77,7 +85,15 @@ function App() {
         onChange={setValue}
       />
       <div className={styles.statusBar}>
-        <div className={styles.statusBarItem}>Ln 1, Col 1</div>
+        <div className={styles.statusBarItem}>
+          Press <kbd>⌘</kbd> + <kbd>K</kbd> to open the command palette
+        </div>
+        {loading && (
+          <div className="flex flex-row space-x-2 items-center justify-center">
+            <span>Processing</span>{" "}
+            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+          </div>
+        )}
       </div>
       <CommandPalette manifests={manifests} runManifest={runManifest} />
     </React.Fragment>

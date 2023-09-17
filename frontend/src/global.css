@@ -35,8 +35,8 @@
     --radius: 0.5rem;
 
     --status-bar-height: 1.5rem;
-    --status-bar-background-color: #1e1e1e;
     --status-bar-color: #fefefe;
+    --status-bar-background-color: #969696;
   }
 
   .dark {
@@ -67,6 +67,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    --status-bar-background-color: #1e1e1e;
   }
 }
 
