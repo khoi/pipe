@@ -6,6 +6,7 @@ import { langs } from "@uiw/codemirror-extensions-langs";
 import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import React from "react";
+import debounce from "lodash.debounce";
 
 import styles from "./App.module.css";
 import { ListManifests, RunManifest } from "../wailsjs/go/main/App";
@@ -16,6 +17,7 @@ import useSystemTheme from "./useSystemTheme";
 import { Loader2 } from "lucide-react";
 import { write } from "./output";
 import { Output } from "./types";
+import { modulOperations } from "./languageDetection";
 
 const extensions = [
   langs.css(),
@@ -30,9 +32,21 @@ const emptyManifests: manifest.Manifest[] = [];
 
 function App() {
   const valueRef = React.useRef<string>("");
+  const detectLang = debounce(async () => {
+    if (!valueRef.current) {
+      return;
+    }
+    try {
+      const result = await modulOperations.runModel(valueRef.current);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }, 2000);
   const codeMirrorRef = React.useRef<ReactCodeMirrorRef>(null);
   const setValue = React.useCallback((value: string) => {
     valueRef.current = value;
+    detectLang();
   }, []);
   const theme = useSystemTheme();
 
@@ -58,6 +72,7 @@ function App() {
       if (!codeMirrorRef.current || !codeMirrorRef.current.view) {
         return;
       }
+
       const view = codeMirrorRef.current.view;
       view.dispatch(
         view.state.changeByRange((range) => ({
