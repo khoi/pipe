@@ -1,12 +1,7 @@
-// import { EditorView } from '@codemirror/view';
-// import { EditorState } from '@codemirror/state';
-// import { basicSetup, minimalSetup } from '@uiw/codemirror-extensions-basic-setup';
-
 import { langs } from "@uiw/codemirror-extensions-langs";
 import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import React from "react";
-import debounce from "lodash.debounce";
 
 import styles from "./App.module.css";
 import { ListManifests, RunManifest } from "../wailsjs/go/main/App";
@@ -17,7 +12,7 @@ import useSystemTheme from "./useSystemTheme";
 import { Loader2 } from "lucide-react";
 import { write } from "./output";
 import { Output } from "./types";
-import { modulOperations } from "./languageDetection";
+import { detectLanguage } from "./languageDetection/detect";
 
 const extensions = [
   langs.css(),
@@ -32,21 +27,13 @@ const emptyManifests: manifest.Manifest[] = [];
 
 function App() {
   const valueRef = React.useRef<string>("");
-  const detectLang = debounce(async () => {
-    if (!valueRef.current) {
-      return;
-    }
-    try {
-      const result = await modulOperations.runModel(valueRef.current);
-      console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-  }, 2000);
+  const handleLangDetection = React.useCallback((lang: string) => {
+    console.log("Detected language", lang);
+  }, []);
   const codeMirrorRef = React.useRef<ReactCodeMirrorRef>(null);
   const setValue = React.useCallback((value: string) => {
     valueRef.current = value;
-    detectLang();
+    detectLanguage(valueRef.current, handleLangDetection);
   }, []);
   const theme = useSystemTheme();
 
@@ -78,7 +65,7 @@ function App() {
         view.state.changeByRange((range) => ({
           changes: [{ from: 0, to: view.state.doc.length, insert: output }],
           range: range,
-        }))
+        })),
       );
       view.focus();
     } catch (error) {
