@@ -1,12 +1,6 @@
-import {
-  langNames,
-  langs,
-  loadLanguage,
-} from "@uiw/codemirror-extensions-langs";
 import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
 import CodeMirror, {
   Compartment,
-  EditorState,
   ReactCodeMirrorRef,
 } from "@uiw/react-codemirror";
 import React from "react";
@@ -20,7 +14,7 @@ import useSystemTheme from "./useSystemTheme";
 import { Loader2 } from "lucide-react";
 import { write } from "./output";
 import { Output } from "./types";
-import { DetectionResult, detectLanguage } from "./languageDetection/detect";
+import * as detect from "./languageDetection/detect";
 
 const languageConf = new Compartment();
 const emptyManifests: manifest.Manifest[] = [];
@@ -28,21 +22,24 @@ const emptyManifests: manifest.Manifest[] = [];
 function App() {
   const valueRef = React.useRef<string>("");
   const codeMirrorRef = React.useRef<ReactCodeMirrorRef>(null);
-  const handleLangDetection = React.useCallback((lang: DetectionResult) => {
-    if (!lang || !codeMirrorRef.current || !codeMirrorRef.current.view) {
-      return;
-    }
+  const handleLangDetection = React.useCallback(
+    (lang: detect.DetectionResult) => {
+      if (!codeMirrorRef.current || !codeMirrorRef.current.view) {
+        return;
+      }
 
-    console.log("Reconfiguring language", lang);
+      console.log("Reconfiguring language", lang);
 
-    codeMirrorRef.current.view.dispatch({
-      effects: languageConf.reconfigure(lang),
-    });
-  }, []);
+      codeMirrorRef.current.view.dispatch({
+        effects: languageConf.reconfigure(lang),
+      });
+    },
+    [],
+  );
 
   const setValue = React.useCallback((value: string) => {
     valueRef.current = value;
-    detectLanguage(valueRef.current, handleLangDetection);
+    detect.detectLanguage(valueRef.current, handleLangDetection);
   }, []);
   const theme = useSystemTheme();
 
