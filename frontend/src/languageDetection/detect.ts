@@ -22,31 +22,27 @@ const modulOperations = new ModelOperations({
 });
 
 function isValidLanguage(lang: string): lang is LanguageName {
-  const langMappingOverrides: Record<string, LanguageName> = {
-    ts: "typescript",
-    js: "javascript",
-    rs: "rust",
-    cs: "csharp",
-    mm: "objectiveC",
-    pl: "perl",
-    md: "markdown",
-    ps1: "powershell",
-    py: "python",
-    sh: "shell",
-    ipynb: "python",
-    bat: "powershell",
-    hs: "haskell",
-    erl: "erlang",
-    coffee: "coffeescript",
-    rb: "ruby",
-  };
-
-  if (langMappingOverrides[lang]) {
-    return langNames.includes(langMappingOverrides[lang]);
-  }
-
   return langNames.includes(lang as LanguageName);
 }
+
+const langMappingOverrides: Record<string, LanguageName> = {
+  ts: "typescript",
+  js: "javascript",
+  rs: "rust",
+  cs: "csharp",
+  mm: "objectiveC",
+  pl: "perl",
+  md: "markdown",
+  ps1: "powershell",
+  py: "python",
+  sh: "shell",
+  ipynb: "python",
+  bat: "powershell",
+  hs: "haskell",
+  erl: "erlang",
+  coffee: "coffeescript",
+  rb: "ruby",
+};
 
 export type DetectionResult = StreamLanguage<unknown> | LanguageSupport;
 
@@ -60,7 +56,8 @@ export const detectLanguage = debounce(async function detectLanguage(
   try {
     const result = await modulOperations.runModel(value);
     if (Array.isArray(result) && result.length > 0) {
-      const lang = result[0].languageId;
+      let lang = result[0].languageId;
+      lang = langMappingOverrides[lang] || lang;
       if (!isValidLanguage(lang)) return;
       const langSupport = langs[lang]();
       onResult(langSupport);
