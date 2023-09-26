@@ -21,7 +21,6 @@ import { Loader2 } from "lucide-react";
 import { write } from "./output";
 import { Output } from "./types";
 import { DetectionResult, detectLanguage } from "./languageDetection/detect";
-import { StreamLanguage } from "@codemirror/language";
 
 const languageConf = new Compartment();
 const emptyManifests: manifest.Manifest[] = [];
@@ -75,7 +74,7 @@ function App() {
         view.state.changeByRange((range) => ({
           changes: [{ from: 0, to: view.state.doc.length, insert: output }],
           range: range,
-        }))
+        })),
       );
       view.focus();
     } catch (error) {

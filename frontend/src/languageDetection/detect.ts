@@ -17,7 +17,7 @@ const modulOperations = new ModelOperations({
   weightsLoaderFunc: fetchWeights,
 });
 
-export type DetectionResult = StreamLanguage<unknown> | LanguageSupport | null;
+export type DetectionResult = StreamLanguage<unknown> | LanguageSupport;
 
 const langMap = {
   ts: langs.typescript(),
@@ -30,7 +30,7 @@ const langMap = {
 
 export const detectLanguage = debounce(async function detectLanguage(
   value: string,
-  onResult: (result: DetectionResult) => void
+  onResult: (result: DetectionResult) => void,
 ) {
   if (!value) {
     return;
@@ -40,11 +40,8 @@ export const detectLanguage = debounce(async function detectLanguage(
     if (Array.isArray(result) && result.length > 0) {
       // TODO: convert result[0].languageId to language from langMap
       onResult(langMap.json);
-    } else {
-      onResult(null);
     }
   } catch (error) {
     console.error(error);
   }
-},
-2000);
+}, 2000);
