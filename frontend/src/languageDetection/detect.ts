@@ -1,8 +1,8 @@
 import debounce from "lodash.debounce";
 import { ModelOperations } from "@vscode/vscode-languagedetection";
 
-import weightsURL from "./group1-shard1of1.bin?url";
-import model from "./model.json";
+import weightsURL from "@vscode/vscode-languagedetection/model/group1-shard1of1.bin?url";
+import model from "@vscode/vscode-languagedetection/model/model.json";
 import { LanguageSupport, StreamLanguage } from "@codemirror/language";
 import {
   langNames,
