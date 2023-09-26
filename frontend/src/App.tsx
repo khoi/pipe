@@ -1,6 +1,14 @@
-import { langs } from "@uiw/codemirror-extensions-langs";
+import {
+  langNames,
+  langs,
+  loadLanguage,
+} from "@uiw/codemirror-extensions-langs";
 import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
-import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import CodeMirror, {
+  Compartment,
+  EditorState,
+  ReactCodeMirrorRef,
+} from "@uiw/react-codemirror";
 import React from "react";
 
 import styles from "./App.module.css";
@@ -12,25 +20,27 @@ import useSystemTheme from "./useSystemTheme";
 import { Loader2 } from "lucide-react";
 import { write } from "./output";
 import { Output } from "./types";
-import { detectLanguage } from "./languageDetection/detect";
+import { DetectionResult, detectLanguage } from "./languageDetection/detect";
+import { StreamLanguage } from "@codemirror/language";
 
-const extensions = [
-  langs.css(),
-  langs.javascript({ jsx: true }),
-  langs.typescript(),
-  langs.html(),
-  langs.json(),
-  langs.markdown(),
-];
-
+const languageConf = new Compartment();
 const emptyManifests: manifest.Manifest[] = [];
 
 function App() {
   const valueRef = React.useRef<string>("");
-  const handleLangDetection = React.useCallback((lang: string) => {
-    console.log("Detected language", lang);
-  }, []);
   const codeMirrorRef = React.useRef<ReactCodeMirrorRef>(null);
+  const handleLangDetection = React.useCallback((lang: DetectionResult) => {
+    if (!lang || !codeMirrorRef.current || !codeMirrorRef.current.view) {
+      return;
+    }
+
+    console.log("Reconfiguring language", lang);
+
+    codeMirrorRef.current.view.dispatch({
+      effects: languageConf.reconfigure(lang),
+    });
+  }, []);
+
   const setValue = React.useCallback((value: string) => {
     valueRef.current = value;
     detectLanguage(valueRef.current, handleLangDetection);
@@ -65,7 +75,7 @@ function App() {
         view.state.changeByRange((range) => ({
           changes: [{ from: 0, to: view.state.doc.length, insert: output }],
           range: range,
-        })),
+        }))
       );
       view.focus();
     } catch (error) {
@@ -79,10 +89,11 @@ function App() {
     <React.Fragment>
       <CodeMirror
         readOnly={loading}
+        basicSetup={true}
         ref={codeMirrorRef}
         className={styles.editor}
         value={valueRef.current}
-        extensions={extensions}
+        extensions={[languageConf.of([])]}
         theme={theme == "dark" ? gruvboxDark : gruvboxLight}
         onChange={setValue}
       />
