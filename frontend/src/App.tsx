@@ -1,4 +1,4 @@
-import { gruvboxDark, gruvboxLight } from "@uiw/codemirror-theme-gruvbox-dark";
+import { githubLight, githubDark } from "@uiw/codemirror-theme-github";
 import CodeMirror, {
   Compartment,
   ReactCodeMirrorRef,
@@ -90,7 +90,7 @@ function App() {
         className={styles.editor}
         value={valueRef.current}
         extensions={[languageConf.of([])]}
-        theme={theme == "dark" ? gruvboxDark : gruvboxLight}
+        theme={theme == "dark" ? githubDark : githubLight}
         onChange={setValue}
       />
       <div className={styles.statusBar}>

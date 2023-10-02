@@ -15,7 +15,7 @@
     "@types/lodash.debounce": "^4.0.7",
     "@uiw/codemirror-extensions-basic-setup": "^4.21.13",
     "@uiw/codemirror-extensions-langs": "^4.21.13",
-    "@uiw/codemirror-theme-gruvbox-dark": "^4.21.13",
+    "@uiw/codemirror-theme-github": "^4.21.18",
     "@uiw/react-codemirror": "^4.21.13",
     "@vscode/vscode-languagedetection": "^1.0.22",
     "class-variance-authority": "^0.7.0",
