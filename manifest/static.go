@@ -6,6 +6,7 @@ var staticManifests = []*Manifest{
 	&Base64Decode,
 	&ShuffleLines,
 	&UUIDGenerate,
+	&JwtDecode,
 }
 
 func StaticManifests() []*Manifest {
