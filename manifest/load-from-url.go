@@ -10,7 +10,6 @@ import (
 )
 
 func loadFromURL(_ context.Context, input *string) (string, error) {
-	// trim input
 	*input = strings.TrimSpace(*input)
 	if input == nil || len(*input) == 0 {
 		return "", errors.New("input url string is nil")
@@ -33,7 +32,7 @@ func loadFromURL(_ context.Context, input *string) (string, error) {
 var LoadFromURL = Manifest{
 	ID:          "load-from-url",
 	Name:        "Load From URL",
-	Description: "Load the content of a URL",
+	Description: "Populate the editor with the contents of a URL.",
 	Pipe: Pipe{
 		Handler: loadFromURL,
 		Args: []Argument{
