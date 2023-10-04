@@ -1,14 +1,14 @@
 package manifest
 
 var staticManifests = []*Manifest{
-	&FormatJSON,
-	&Base64Encode,
 	&Base64Decode,
-	&ShuffleLines,
-	&UUIDGenerate,
+	&Base64Encode,
+	&FormatJSON,
 	&JwtDecode,
-	&SortLines,
 	&LoadFromURL,
+	&ShuffleLines,
+	&SortLines,
+	&UUIDGenerate,
 }
 
 func StaticManifests() []*Manifest {

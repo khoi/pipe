@@ -14,3 +14,8 @@ to this in your browser, and you can call your Go code from devtools.
 ## Building
 
 To build a redistributable, production mode package, use `wails build`.
+
+## Adding manifests
+
+Add a new file under `./manifest`, exporting a variable of type `Manifest`.
+Run `go generate` to update our collection of manifests in `manifest/static.go`
