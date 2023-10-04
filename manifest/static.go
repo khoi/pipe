@@ -8,6 +8,7 @@ var staticManifests = []*Manifest{
 	&UUIDGenerate,
 	&JwtDecode,
 	&SortLines,
+	&LoadFromURL,
 }
 
 func StaticManifests() []*Manifest {
