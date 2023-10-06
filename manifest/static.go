@@ -9,6 +9,7 @@ var staticManifests = []*Manifest{
 	&JwtDecode,
 	&SortLines,
 	&LoadFromURL,
+	&CurrentTimeStamp,
 }
 
 func StaticManifests() []*Manifest {
