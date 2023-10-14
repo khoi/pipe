@@ -9,12 +9,18 @@ import (
 	"strings"
 )
 
-func loadFromURL(_ context.Context, input *string) (string, error) {
+var client = &http.Client{}
+
+func loadFromURL(ctx context.Context, input *string) (string, error) {
 	*input = strings.TrimSpace(*input)
 	if input == nil || len(*input) == 0 {
 		return "", errors.New("input url string is nil")
 	}
-	resp, err := http.Get(*input)
+	req, err := http.NewRequestWithContext(ctx, "GET", *input, nil)
+	if err != nil {
+		return "", err
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}
